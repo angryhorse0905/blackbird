@@ -10,6 +10,7 @@
 #include <array>
 #include <ctime>
 #include <cmath>
+#include <algorithm>
 
 namespace GDAX
 {
@@ -48,9 +49,13 @@ double getAvail(Parameters &params, std::string currency)
   size_t arraySize = json_array_size(root.get());
   double available = 0.0;
   const char *currstr;
+
+  std::transform(currency.begin(), currency.end(),currency.begin(), ::toupper);
+
   for (size_t i = 0; i < arraySize; i++)
   {
     std::string tmpCurrency = json_string_value(json_object_get(json_array_get(root.get(), i), "currency"));
+
     if (tmpCurrency.compare(currency.c_str()) == 0)
     {
       currstr = json_string_value(json_object_get(json_array_get(root.get(), i), "available"));

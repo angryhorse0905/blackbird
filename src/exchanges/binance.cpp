@@ -48,7 +48,7 @@ double getAvail(Parameters &params, std::string currency)
 {
     std::string cur_str;
     //cur_str += "symbol=BTCUSDT";
-    if (currency.compare("USD") == 0)
+    if (currency.compare("USD") == 0 || currency.compare("usd") == 0)
     {
         cur_str += "USDT";
     }
@@ -62,9 +62,11 @@ double getAvail(Parameters &params, std::string currency)
     double available = 0.0;
     const char *currstr;
     auto balances = json_object_get(root.get(), "balances");
+
     for (size_t i = 0; i < arraySize; i++)
     {
         std::string tmpCurrency = json_string_value(json_object_get(json_array_get(balances, i), "asset"));
+      
         if (tmpCurrency.compare(cur_str.c_str()) == 0)
         {
             currstr = json_string_value(json_object_get(json_array_get(balances, i), "free"));
